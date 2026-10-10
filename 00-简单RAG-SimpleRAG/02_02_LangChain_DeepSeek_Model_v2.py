@@ -17,13 +17,14 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 all_splits = text_splitter.split_documents(docs)
 
-# 3. 设置嵌入模型
-from langchain_huggingface import HuggingFaceEmbeddings
+# 3. 设置嵌入模型(兼容 OpenAI API 的 omlx 服务)
+from langchain_openai import OpenAIEmbeddings
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="BAAI/bge-small-zh-v1.5",
-    model_kwargs={'device': 'cpu'},
-    encode_kwargs={'normalize_embeddings': True}
+embeddings = OpenAIEmbeddings(
+    model="bge-m3-mlx-4bit",
+    openai_api_base="http://127.0.0.1:28080/v1",
+    api_key="omlx",
+    check_embedding_ctx_length=False
 )
 
 # 4. 创建向量存储
@@ -54,14 +55,14 @@ prompt = ChatPromptTemplate.from_template("""
 from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(
-    model="deepseek-reasoner",  # DeepSeek API 支持的模型名称
-    base_url="https://api.deepseek.com/v1",
+    model="MiMo-V2.6-Distill-Qwen-9B-OptiQ-4bit",  # DeepSeek API 支持的模型名称
+    base_url="http://127.0.0.1:28080/v1",
     temperature=0.7,        # 控制输出的随机性(0-1之间,越大越随机)
     max_tokens=2048,        # 最大输出长度
     top_p=0.95,            # 控制输出的多样性(0-1之间)
     presence_penalty=0.0,   # 重复惩罚系数(-2.0到2.0之间)
     frequency_penalty=0.0,  # 频率惩罚系数(-2.0到2.0之间)
-    api_key=os.getenv("DEEPSEEK_API_KEY")  # 从环境变量加载API key
+    api_key='omlx'  # 从环境变量加载API key
 )
 answer = llm.invoke(prompt.format(question=question, context=docs_content))
 print(answer)

@@ -15,7 +15,12 @@ all_splits = text_splitter.split_documents(docs)
 # 3. 设置嵌入模型
 from langchain_openai import OpenAIEmbeddings
 
-embeddings = OpenAIEmbeddings()
+embeddings = OpenAIEmbeddings(
+    model="all-MiniLM-L6-v2",
+    openai_api_base="http://127.0.0.1:28080/v1",
+    api_key="omlx",
+    check_embedding_ctx_length=False
+)
 
 # 4. 创建向量存储
 from langchain_core.vectorstores import InMemoryVectorStore
@@ -41,7 +46,16 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 
-llm = ChatOpenAI(model="gpt-3.5-turbo")
+llm = ChatOpenAI(
+    model="deepseek-reasoner",  # DeepSeek API 支持的模型名称
+    base_url="http://127.0.0.1:28080/v1",
+    temperature=0.7,        # 控制输出的随机性(0-1之间,越大越随机)
+    max_tokens=2048,        # 最大输出长度
+    top_p=0.95,            # 控制输出的多样性(0-1之间)
+    presence_penalty=0.0,   # 重复惩罚系数(-2.0到2.0之间)
+    frequency_penalty=0.0,  # 频率惩罚系数(-2.0到2.0之间)
+    api_key='omlx'  # 从环境变量加载API key
+)
 
 # 8. 构建 LCEL 链
 # 管道式数据流像使用 Unix 命令管道 (|) 一样，将不同的处理逻辑串联在一起

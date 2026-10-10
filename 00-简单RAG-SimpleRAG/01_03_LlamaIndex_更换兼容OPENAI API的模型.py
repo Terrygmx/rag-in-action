@@ -5,19 +5,19 @@ from llama_index.embeddings.openai import OpenAIEmbedding # 导入 OpenAI Embedd
 
 # --- 开始配置你的自定义 API 地址和密钥 ---
 # 请将下面的 placeholder 替换为你的实际 API Base URL 和 API Key
-custom_api_base_url = "https://vip.apiyi.com/v1"  
-custom_api_key = "XXX"            # 例如: "sk-yourkeyvalue"
+custom_api_base_url = "http://127.0.0.1:28080/v1"
+custom_api_key = "omlx"            # 例如: "sk-yourkeyvalue"
 
 # (可选) 确认你的第三方 API 支持并需要使用的模型名称
 
 # OpenAI 默认模型:
-llm_model_name = "gpt-4" # 或者你的 API 支持的其他聊天模型
-embedding_model_name = "text-embedding-ada-002" # 或者你的 API 支持的其他嵌入模型
+llm_model_name = "MiMo-V2.6-Distill-Qwen-9B-OptiQ-4bit" # 或者你的 API 支持的其他聊天模型
+embedding_model_name = "bge-m3-mlx-4bit" # 或者你的 API 支持的其他嵌入模型
 
 # 通过代码直接配置 (推荐，更清晰)
 # 配置全局的 LLM (用于问答生成)
 Settings.llm = OpenAI(
-    model=llm_model_name,
+    model_name=llm_model_name,
     api_key=custom_api_key,
     api_base=custom_api_base_url,
     # 如果你的 API 端点有其他需要传递的参数，可以在这里添加
@@ -26,7 +26,7 @@ Settings.llm = OpenAI(
 
 # 配置全局的 Embedding Model (用于文本向量化)
 Settings.embed_model = OpenAIEmbedding(
-    model=embedding_model_name,
+    model_name=embedding_model_name,
     api_key=custom_api_key,
     api_base=custom_api_base_url,
     # 有些 embedding 端点可能也接受额外参数
@@ -40,7 +40,7 @@ Settings.embed_model = OpenAIEmbedding(
 # 第二行代码：加载数据
 # 确保文件路径 "90-文档-Data/黑悟空/设定.txt" 是正确的，并且程序有权限读取
 try:
-    documents = SimpleDirectoryReader(input_files=["90-文档-Data/黑悟空/设定.txt"]).load_data()
+    documents = SimpleDirectoryReader(input_files=["../90-文档-Data/黑悟空/黑悟空wiki.txt"]).load_data()
 except Exception as e:
     print(f"加载文档时出错: {e}")
     print("请检查文件路径和权限。")

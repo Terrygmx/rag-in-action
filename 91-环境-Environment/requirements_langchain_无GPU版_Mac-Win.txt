@@ -61,8 +61,6 @@ google-api-core==2.24.1
 google-auth==2.38.0
 google-cloud-vision==3.9.0
 googleapis-common-protos==1.66.0
-gradio==4.27.0
-gradio_client==0.15.1
 greenlet==3.1.1
 grpcio==1.67.1
 grpcio-status==1.67.1
@@ -214,7 +212,7 @@ rsa==4.9
 ruff==0.4.1
 safetensors==0.5.2
 scikit-learn==1.6.1
-scipy==1.15.1
+scipy==1.16.2
 seaborn==0.13.2
 semantic-version==2.10.0
 sentence-transformers==3.4.1
